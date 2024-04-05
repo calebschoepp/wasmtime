@@ -879,9 +879,10 @@ fn resolve_type_in_package(resolve: &Resolve, wit_path: &str) -> anyhow::Result<
             Some(rest) => rest,
             None => continue,
         };
-        let wit_path = wit_path
-            .strip_prefix('/')
-            .ok_or_else(|| anyhow!("expected `/` after interface name"))?;
+        let wit_path = match wit_path.strip_prefix('/') {
+            Some(rest) => rest,
+            None => continue,
+        };
 
         return interface
             .types
